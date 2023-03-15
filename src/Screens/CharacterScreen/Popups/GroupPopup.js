@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { View, Text, StyleSheet, TouchableOpacity, Alert } from "react-native";
 import { AntDesign } from '@expo/vector-icons';
-import { addGroup, addCharacterToGroup, getGroupsDataOfCharacter } from "../../../AsyncStorage";
+import { addGroup, addCharacterToGroup, getGroupsDataOfCharacter, removeCharacterFromGroup } from "../../../AsyncStorage";
 import { BottomSheetTextInput, BottomSheetFlatList } from "@gorhom/bottom-sheet";
 
 // Попап со списком групп.
@@ -35,6 +35,16 @@ export default function GroupPopup({ character }) {
         }
     }
 
+    const internalRemoveCharacterFromGroup = async (groupTitle) => {
+        const success = await removeCharacterFromGroup(character, groupTitle)
+        if (success) {
+            const characterGroups = await getGroupsDataOfCharacter(character._id);
+            setGroups(characterGroups);
+        } else {
+            Alert.alert('Something went wrong while removing character.')
+        }
+    }
+
     const handleSearch = (groups) => {
         return groups.filter(
             (group) => group.title.toLowerCase().startsWith(input.toLowerCase())
@@ -56,6 +66,9 @@ export default function GroupPopup({ character }) {
         const addButton = groupIncludes ?
             (<TouchableOpacity 
                 style={[styles.addToGroupButton, {backgroundColor: '#47a842'}]}
+                onPress={() =>
+                    internalRemoveCharacterFromGroup(item.title)
+                }
                 activeOpacity={1}>
                 <AntDesign name="check" size={24} color="white" />
             </TouchableOpacity>) :

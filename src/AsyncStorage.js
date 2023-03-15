@@ -56,6 +56,37 @@ export async function addCharacterToGroup(character, groupTitle) {
     }
 }
 
+export async function removeCharacterFromGroup(character, groupTitle) {
+    const groups = await getData(groupsKey);
+    if (groups === null) {
+        return false;
+    } else {
+        let found = false
+        let result = [];
+        for (const group of groups) {
+            if (group.title !== groupTitle) {
+                result.push(group);
+            } else if (group.characters.some(
+                storedCharacter => (storedCharacter._id === character._id)
+            )) {
+                found = true
+                result.push({
+                    ...group,
+                    characters: group.characters.filter(
+                        storedCharacter => storedCharacter._id !== character._id
+                    )
+                })
+            }
+        }
+        if (found) {
+            return await storeData(result, groupsKey);
+        } else {
+            return false
+        }
+        
+    }
+}
+
 export async function getGroupsDataOfCharacter(characterId) {
     const groups = await getData(groupsKey);
     if (groups === null) {
