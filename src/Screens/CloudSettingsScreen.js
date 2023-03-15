@@ -3,7 +3,7 @@ import { StyleSheet, View, Text, FlatList, Alert } from "react-native";
 import { AntDesign } from '@expo/vector-icons';
 import Header from "../Elements/Header";
 import { TouchableOpacity } from "react-native-gesture-handler";
-import { signOut } from "firebase/auth";
+import { signOut, deleteUser } from "firebase/auth";
 import { auth, db } from "../firebase/config";
 import { doc, getDoc, setDoc } from "firebase/firestore";
 import { importCommentsInfo, importGroupsInfo, exportCommentsInfo, exportGroupsInfo } from "../AsyncStorage";
@@ -71,6 +71,22 @@ export default function CloudSettingsScreen({ navigation }) {
             })
     }
 
+    const handleDeleteUser = () => {
+        Promise.all([
+            importCommentsInfo(null),
+            importGroupsInfo(null),
+            deleteUser(auth.currentUser)
+        ]).then(() => {
+                navigation.reset({
+                    index: 0,
+                    routes: [{ name: 'Auth' }],
+                });
+            })
+            .catch(error => {
+                Alert.alert(error.message)
+            })
+    }
+
     return (
         <View style={{flex: 1}}>
             <Header title={'Cloud'}/>
@@ -95,7 +111,19 @@ export default function CloudSettingsScreen({ navigation }) {
             </TouchableOpacity>
             <TouchableOpacity 
                 style={styles.settingWrapper} 
-                onPress={() => {}}>
+                onPress={() => {
+                    Alert.alert('Are you sure?', '', [
+                        {
+                          text: 'Delete account',
+                          onPress: () => handleDeleteUser(),
+                          style: 'destructive',
+                        },
+                        {
+                            text: 'Cancel', 
+                            style: 'cancel'
+                        },
+                      ])
+                }}>
                 <AntDesign name="deleteuser" size={24} color="#f55" />
                 <Text style={[styles.settingTitle, {color: "#f55"}]}>Delete account</Text>
             </TouchableOpacity>
