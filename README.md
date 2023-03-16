@@ -21,6 +21,14 @@ npx expo start
 - Поиск случайного персонажа
 - Красивый лоадер с миккимаусом
 
+## Что использовалось
+
+- Для навигации @react-navigation/stack
+- Для попапов @gorhom/bottom-sheet
+- Для иконок @expo/vector-icons
+- Для локального хранения @react-native-async-storage/async-storage
+- Для хранения в облаке Firebase
+
 ## Возможно неинуитивное UI решение
 
 <img src="https://user-images.githubusercontent.com/71835639/225730483-c7271ee5-485a-4578-a1d3-0bc5b8dd27ae.png" width=300>
