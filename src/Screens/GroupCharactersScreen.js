@@ -38,7 +38,7 @@ export default function GroupCharactersScreen({ navigation, route }) {
 
     return (
         <View style={styles.container}>
-            <Header title={groupTitle} />
+            <Header title={groupTitle} showBackButton />
 
             {provideCharacterList()}
         </View>

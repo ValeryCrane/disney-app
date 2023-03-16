@@ -6,6 +6,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import BottomSheet from '@gorhom/bottom-sheet';
 import CommentPopup from "./Popups/CommentPopup";
 import GroupPopup from "./Popups/GroupPopup";
+import Header from "../../Elements/Header";
 
 const backgroundImageSource = {
     uri: 'https://www.rollingstone.com/wp-content/uploads/2023/03/Disney-World-DeSantis.jpg?w=1581&h=1054&crop=1'
@@ -59,6 +60,7 @@ export default function CharacterScreen({ route }) {
             colors={['#ffffff00', '#eeeeee', '#eeeeee']}
             style={styles.gradient}
         > 
+            <Header title={''} showBackButton transparent />
             <ScrollView>
                 <Image
                     style={styles.avatar}

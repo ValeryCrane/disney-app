@@ -51,7 +51,7 @@ export default function GroupsScreen({ navigation }) {
 
     return (
         <View style={styles.container}>
-            <Header title={'Groups'}/>
+            <Header title={'Groups'} showBackButton />
 
             {provideGroupList()}
         </View>
