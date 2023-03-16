@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { StyleSheet, View, SafeAreaView, Image, FlatList, TouchableWithoutFeedback, TouchableOpacity } from "react-native";
+import { StyleSheet, View, Text } from "react-native";
 import { Entypo } from '@expo/vector-icons';
 import Header from "../Elements/Header";
 import ListOfCharacters from "../Elements/ListOfCharacters";
@@ -17,16 +17,44 @@ export default function GroupCharactersScreen({ navigation, route }) {
         return unsubscribe;
     }, [navigation]);
 
+    const provideCharacterList = () => {
+        if (characters.length === 0) {
+            return (
+                <View style={styles.noCharactersLabelWrapper}>
+                    <Text style={styles.noCharactersLabel}>No characters in this group</Text>
+                </View>
+            )
+        } else {
+            return (
+                <ListOfCharacters 
+                    characters={characters}
+                    onPress={(character => {
+                        navigation.navigate("Character", character)
+                    })}
+                />
+            )
+        }
+    }
+
     return (
-        <View style={{flex: 1}}>
+        <View style={styles.container}>
             <Header title={groupTitle} />
 
-            <ListOfCharacters 
-                characters={characters}
-                onPress={(character => {
-                    navigation.navigate("Character", character)
-                })}
-            />
+            {provideCharacterList()}
         </View>
     )
 }
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1
+    },
+    noCharactersLabelWrapper: {
+        flex: 1,
+        justifyContent: "center",
+        alignItems: 'center'
+    },
+    noCharactersLabel: {
+        opacity: 0.75
+    }
+})

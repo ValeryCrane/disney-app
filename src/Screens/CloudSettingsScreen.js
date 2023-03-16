@@ -7,6 +7,7 @@ import { signOut, deleteUser } from "firebase/auth";
 import { auth, db } from "../firebase/config";
 import { doc, getDoc, setDoc } from "firebase/firestore";
 import { importCommentsInfo, importGroupsInfo, exportCommentsInfo, exportGroupsInfo } from "../AsyncStorage";
+import HUD from "../Elements/HUD";
 
 const groupsCloudKey = "GROUPS_CLOUD";
 const commentsCloudKey = "COMMENTS_CLOUD";
@@ -41,21 +42,32 @@ const readDataFromCloud = async () => {
 
 export default function CloudSettingsScreen({ navigation }) {
 
+    const [loading, setLoading] = useState(false)
+
     const handleDownloadData = () => {
+        setLoading(true)
         readDataFromCloud()
             .catch(error => {
                 Alert.alert(error.message)
             })
+            .finally(() => {
+                setLoading(false)
+            })
     }
 
     const handleUploadData = () => {
+        setLoading(true)
         saveDataInCloud()
             .catch(error => {
                 Alert.alert(error.message)
             })
+            .finally(() => {
+                setLoading(false)
+            })
     }
 
     const handleLogout = () => {
+        setLoading(true)
         Promise.all([
             importCommentsInfo(null),
             importGroupsInfo(null),
@@ -69,9 +81,13 @@ export default function CloudSettingsScreen({ navigation }) {
             .catch(error => {
                 Alert.alert(error.message)
             })
+            .finally(() => {
+                setLoading(false)
+            })
     }
 
     const handleDeleteUser = () => {
+        setLoading(true)
         Promise.all([
             importCommentsInfo(null),
             importGroupsInfo(null),
@@ -84,6 +100,9 @@ export default function CloudSettingsScreen({ navigation }) {
             })
             .catch(error => {
                 Alert.alert(error.message)
+            })
+            .finally(() => {
+                setLoading(false)
             })
     }
 
@@ -127,6 +146,7 @@ export default function CloudSettingsScreen({ navigation }) {
                 <AntDesign name="deleteuser" size={24} color="#f55" />
                 <Text style={[styles.settingTitle, {color: "#f55"}]}>Delete account</Text>
             </TouchableOpacity>
+            <HUD isActive={loading} />
         </View>
     )
 }

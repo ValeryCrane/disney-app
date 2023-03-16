@@ -4,12 +4,14 @@ import { TextInput } from "react-native-gesture-handler";
 import Header from "../Elements/Header";
 import { onAuthStateChanged, signInWithEmailAndPassword, createUserWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../firebase/config";
+import HUD from "../Elements/HUD";
 
 // Экран авторизации в приложении
 export default function AuthScreen({ navigation }) {
 
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
+    const [loading, setLoading] = useState(false)
 
     useEffect(() => {
         // При изменении статуса авторизации переходим на экран поиска.
@@ -27,24 +29,30 @@ export default function AuthScreen({ navigation }) {
 
     // Обработка входа.
     const handleLogin = () => {
+        setLoading(true)
         signInWithEmailAndPassword(auth, email, password)
             .then(userCredentials => {
+                setLoading(false)
                 const user = userCredentials.user
                 console.log('Logged in with:', user.email)
             })
             .catch(error => {
+                setLoading(false)
                 Alert.alert(error.message)
             })
     }
 
     // Обработка регистрации.
     const handleRegister = () => {
+        setLoading(true)
         createUserWithEmailAndPassword(auth, email, password)
             .then(userCredentials => {
+                setLoading(false)
                 const user = userCredentials.user
                 console.log('Logged in with:', user.email)
             })
             .catch(error => {
+                setLoading(false)
                 Alert.alert(error.message)
             })
     }
@@ -72,6 +80,7 @@ export default function AuthScreen({ navigation }) {
                     </TouchableOpacity>
                     </View>
             </KeyboardAvoidingView>
+            <HUD isActive={loading}/>
         </View>
     );
 }

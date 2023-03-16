@@ -32,19 +32,36 @@ export default function GroupsScreen({ navigation }) {
         )
     }
 
+    const provideGroupList = () => {
+        if (groups.length === 0) {
+            return (
+                <View style={styles.noGroupsLabelWrapper}>
+                    <Text style={styles.noGroupsLabel}>No groups found</Text>
+                </View>
+            )
+        } else {
+            return (
+                <FlatList
+                    data={groups}
+                    renderItem={({ item }) => renderGroup(item)}
+                />
+            )
+        }
+    }
+
     return (
-        <View style={{flex: 1}}>
+        <View style={styles.container}>
             <Header title={'Groups'}/>
 
-            <FlatList
-                data={groups}
-                renderItem={({ item }) => renderGroup(item)}
-            />
+            {provideGroupList()}
         </View>
     )
 }
 
 const styles = StyleSheet.create({
+    container: {
+        flex: 1
+    },
     groupWrapper: {
         flexDirection: 'row',
         height: 48,
@@ -56,5 +73,13 @@ const styles = StyleSheet.create({
         flex: 1,
         fontSize: 16,
         fontWeight: 500
+    },
+    noGroupsLabelWrapper: {
+        flex: 1,
+        justifyContent: "center",
+        alignItems: 'center'
+    },
+    noGroupsLabel: {
+        opacity: 0.75
     }
 })
