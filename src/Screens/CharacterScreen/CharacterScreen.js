@@ -8,9 +8,7 @@ import CommentPopup from "./Popups/CommentPopup";
 import GroupPopup from "./Popups/GroupPopup";
 import Header from "../../Elements/Header";
 
-const backgroundImageSource = {
-    uri: 'https://www.rollingstone.com/wp-content/uploads/2023/03/Disney-World-DeSantis.jpg?w=1581&h=1054&crop=1'
-}
+const backgroundImageSource = require('../../../assets/disney-background.jpg')
 
 const propertiesTitles = {
     films: "Films",
